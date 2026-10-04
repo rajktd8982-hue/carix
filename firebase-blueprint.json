@@ -1,0 +1,173 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile with role, garage count, and social metrics",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "username": { "type": "string", "maxLength": 64 },
+        "displayName": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "format": "email" },
+        "role": { "type": "string", "enum": ["enthusiast", "shop_owner", "admin"] },
+        "avatar": { "type": "string" },
+        "bio": { "type": "string", "maxLength": 500 },
+        "location": { "type": "string", "maxLength": 100 },
+        "followersCount": { "type": "number" },
+        "followingCount": { "type": "number" },
+        "isVerified": { "type": "boolean" },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "username", "role"]
+    },
+    "Car": {
+      "title": "Car",
+      "description": "Dedicated Instagram-style profile for a specific vehicle",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "ownerId": { "type": "string" },
+        "ownerUsername": { "type": "string" },
+        "carUsername": { "type": "string", "maxLength": 64 },
+        "carName": { "type": "string", "maxLength": 64 },
+        "make": { "type": "string", "maxLength": 64 },
+        "model": { "type": "string", "maxLength": 64 },
+        "year": { "type": "number" },
+        "variant": { "type": "string", "maxLength": 64 },
+        "color": { "type": "string", "maxLength": 32 },
+        "registrationNumber": { "type": "string", "maxLength": 32 },
+        "isRegNumberPrivate": { "type": "boolean" },
+        "coverPhoto": { "type": "string" },
+        "profilePhoto": { "type": "string" },
+        "bio": { "type": "string", "maxLength": 500 },
+        "modsCount": { "type": "number" },
+        "followersCount": { "type": "number" },
+        "isVerified": { "type": "boolean" }
+      },
+      "required": ["id", "ownerId", "carUsername", "make", "model", "year"]
+    },
+    "Post": {
+      "title": "Post",
+      "description": "Community posts, build logs, and reels",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "userAvatar": { "type": "string" },
+        "postAs": { "type": "string", "enum": ["user", "car"] },
+        "authorCarId": { "type": "string" },
+        "authorCarUsername": { "type": "string" },
+        "carModel": { "type": "string" },
+        "mediaUrl": { "type": "string" },
+        "mediaType": { "type": "string", "enum": ["image", "video"] },
+        "caption": { "type": "string", "maxLength": 2000 },
+        "location": { "type": "string", "maxLength": 128 },
+        "likesCount": { "type": "number" },
+        "commentsCount": { "type": "number" },
+        "category": { "type": "string", "enum": ["build", "reel", "showcase", "question", "event"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "userId", "username", "mediaUrl", "caption"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Marketplace modifications, parts, and tools with fitment matrix",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "shopId": { "type": "string" },
+        "shopName": { "type": "string" },
+        "name": { "type": "string", "maxLength": 200 },
+        "price": { "type": "number" },
+        "category": { "type": "string" },
+        "image": { "type": "string" },
+        "description": { "type": "string", "maxLength": 2000 },
+        "compatibleCars": { "type": "string" },
+        "difficulty": { "type": "string", "enum": ["Beginner DIY", "Intermediate", "Professional Workshop"] },
+        "isFitmentVerified": { "type": "boolean" }
+      },
+      "required": ["id", "shopId", "name", "price", "category"]
+    },
+    "Shop": {
+      "title": "Shop",
+      "description": "Verified automotive workshop or performance tuning garage",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string", "maxLength": 200 },
+        "city": { "type": "string", "maxLength": 100 },
+        "state": { "type": "string", "maxLength": 100 },
+        "isVerified": { "type": "boolean" },
+        "rating": { "type": "number" },
+        "reviewsCount": { "type": "number" },
+        "phone": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "format": "email" },
+        "verificationStatus": { "type": "string", "enum": ["verified", "under_review", "submitted", "not_verified", "rejected", "more_info_required"] }
+      },
+      "required": ["id", "name", "city", "state"]
+    },
+    "Report": {
+      "title": "Report",
+      "description": "User reports against inappropriate content or abusive profiles for admin moderation",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "reporterId": { "type": "string" },
+        "reporterUsername": { "type": "string" },
+        "targetType": { "type": "string", "enum": ["user", "post", "car", "shop"] },
+        "targetId": { "type": "string" },
+        "targetUsername": { "type": "string" },
+        "reason": { "type": "string" },
+        "details": { "type": "string", "maxLength": 1000 },
+        "status": { "type": "string", "enum": ["pending", "resolved", "dismissed"] },
+        "createdAt": { "type": "string" }
+      },
+      "required": ["id", "reporterId", "targetType", "targetId", "reason"]
+    },
+    "BlockedUser": {
+      "title": "BlockedUser",
+      "description": "Users banned or blocked by the founder/admin",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "userId": { "type": "string" },
+        "username": { "type": "string" },
+        "reason": { "type": "string" },
+        "blockedAt": { "type": "string" },
+        "blockedBy": { "type": "string" }
+      },
+      "required": ["id", "userId", "username"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles and garage statistics"
+    },
+    "/cars/{carId}": {
+      "schema": "Car",
+      "description": "Dedicated social profiles for individual cars"
+    },
+    "/posts/{postId}": {
+      "schema": "Post",
+      "description": "Social feed posts and video edits"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Catalog modification parts, accessories, and tools"
+    },
+    "/shops/{shopId}": {
+      "schema": "Shop",
+      "description": "Verified automotive garages and performance centers"
+    },
+    "/reports/{reportId}": {
+      "schema": "Report",
+      "description": "Moderation reports submitted by users"
+    },
+    "/blocked_users/{blockId}": {
+      "schema": "BlockedUser",
+      "description": "System-wide blocked and banned accounts"
+    }
+  }
+}
